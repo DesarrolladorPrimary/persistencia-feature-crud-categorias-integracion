@@ -1,4 +1,5 @@
 import { ProductModel } from "../models/product.model.js";
+import { CategoryModel } from "../models/category.model.js";
 
 const getAllProducts = (req, res) => {
   const products = ProductModel.findAll();
@@ -40,18 +41,33 @@ const getProductById = (req, res) => {
 };
 
 const createProduct = (req, res) => {
-  const { name, price, category_id } = req.body;
-  // Validación simple
-  if (!name || !price || !category_id) {
+  const { name, price } = req.body;
+  const categoryId = req.body.categoryId ?? req.body.category_id;
+
+  if (!name || price == null || categoryId == null) {
     return res.status(400).json({
       success: false,
-      message: "Nombre, precio y categoría son obligatorios",
+      message: "Nombre, precio y categoryId son obligatorios",
       data: [],
       errors: [],
     });
   }
 
-  const newProduct = ProductModel.create({ name, price, category_id });
+  const category = CategoryModel.findById(Number(categoryId));
+  if (!category) {
+    return res.status(400).json({
+      success: false,
+      message: "La categoría indicada no existe",
+      data: [],
+      errors: [],
+    });
+  }
+
+  const newProduct = ProductModel.create({
+    name,
+    price,
+    categoryId: Number(categoryId),
+  });
   res.status(201).json({
     success: true,
     message: "Producto creado correctamente",
@@ -62,7 +78,27 @@ const createProduct = (req, res) => {
 
 const updateProduct = (req, res) => {
   const { id } = req.params;
-  const updatedProduct = ProductModel.update(Number(id), req.body);
+  const updatedFields = { ...req.body };
+
+  if ("category_id" in updatedFields && !("categoryId" in updatedFields)) {
+    updatedFields.categoryId = updatedFields.category_id;
+    delete updatedFields.category_id;
+  }
+
+  if ("categoryId" in updatedFields) {
+    const category = CategoryModel.findById(Number(updatedFields.categoryId));
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "La categoría indicada no existe",
+        data: [],
+        errors: [],
+      });
+    }
+    updatedFields.categoryId = Number(updatedFields.categoryId);
+  }
+
+  const updatedProduct = ProductModel.update(Number(id), updatedFields);
   if (!updatedProduct) { 
     return res.status(404).json({
       success: false,
@@ -105,6 +141,6 @@ const deleteProduct = (req, res) => {
       errors: [],
     });
   } 
-}
+};
 
 export { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };

@@ -1,5 +1,10 @@
 import categoriesData from "../data/categories.data.js";
 
+const getNextId = () => {
+  if (categoriesData.length === 0) return 1;
+  return Math.max(...categoriesData.map((category) => category.id)) + 1;
+};
+
 export const CategoryModel = {
   findAll: () => {
     return categoriesData;
@@ -10,7 +15,7 @@ export const CategoryModel = {
   },
 
   create: (newCategory) => {
-    const id = categoriesData.length + 1;
+    const id = getNextId();
     const categoryWithId = { id, ...newCategory };
     categoriesData.push(categoryWithId);
     return categoryWithId;
