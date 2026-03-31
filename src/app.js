@@ -10,11 +10,11 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
-    messaje: "Saludo de la API",
+    message: "Saludo de la API",
     data: [],
     errors: [],
   });
-})
+});
 
 app.use("/products", productRouter);
 app.use("/categories", categoryRouter);
