@@ -9,14 +9,14 @@ export const CategoryController = {
         success: true,
         message: "Categorías obtenidas exitosamente",
         data: categories,
-        errors: []
+        errors: [],
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error al obtener las categorías",
-        data: null,
-        errors: [error.message]
+        data: [],
+        errors: [error.message],
       });
     }
   },
@@ -30,8 +30,8 @@ export const CategoryController = {
         return res.status(404).json({
           success: false,
           message: "Categoría no encontrada",
-          data: null,
-          errors: ["ID de categoría no existe"]
+          data: [],
+          errors: ["ID de categoría no existe"],
         });
       }
 
@@ -39,14 +39,14 @@ export const CategoryController = {
         success: true,
         message: "Categoría obtenida exitosamente",
         data: category,
-        errors: []
+        errors: [],
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error al obtener la categoría",
-        data: null,
-        errors: [error.message]
+        data: [],
+        errors: [error.message],
       });
     }
   },
@@ -59,8 +59,8 @@ export const CategoryController = {
         return res.status(400).json({
           success: false,
           message: "El nombre de la categoría es requerido",
-          data: null,
-          errors: ["El campo name es obligatorio"]
+          data: [],
+          errors: ["El campo name es obligatorio"],
         });
       }
 
@@ -69,14 +69,14 @@ export const CategoryController = {
         success: true,
         message: "Categoría creada exitosamente",
         data: newCategory,
-        errors: []
+        errors: [],
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error al crear la categoría",
-        data: null,
-        errors: [error.message]
+        data: [],
+        errors: [error.message],
       });
     }
   },
@@ -90,8 +90,8 @@ export const CategoryController = {
         return res.status(400).json({
           success: false,
           message: "El nombre de la categoría es requerido",
-          data: null,
-          errors: ["El campo name es obligatorio"]
+          data: [],
+          errors: ["El campo name es obligatorio"],
         });
       }
 
@@ -101,8 +101,8 @@ export const CategoryController = {
         return res.status(404).json({
           success: false,
           message: "Categoría no encontrada",
-          data: null,
-          errors: ["ID de categoría no existe"]
+          data: [],
+          errors: ["ID de categoría no existe"],
         });
       }
 
@@ -110,14 +110,14 @@ export const CategoryController = {
         success: true,
         message: "Categoría actualizada exitosamente",
         data: updatedCategory,
-        errors: []
+        errors: [],
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error al actualizar la categoría",
-        data: null,
-        errors: [error.message]
+        data: [],
+        errors: [error.message],
       });
     }
   },
@@ -133,8 +133,8 @@ export const CategoryController = {
         return res.status(404).json({
           success: false,
           message: "Categoría no encontrada",
-          data: null,
-          errors: ["ID de categoría no existe"]
+          data: [],
+          errors: ["ID de categoría no existe"],
         });
       }
       
@@ -145,26 +145,26 @@ export const CategoryController = {
         return res.status(409).json({
           success: false,
           message: "No se puede eliminar la categoría porque tiene recursos vinculados",
-          data: null,
-          errors: ["La categoría tiene productos asociados"]
+          data: [],
+          errors: ["La categoría tiene productos asociados"],
         });
       }
       
       // Si no hay productos vinculados, proceder con la eliminación
-      const deleted = CategoryModel.delete(categoryId);
+      CategoryModel.delete(categoryId);
       
       res.status(200).json({
         success: true,
         message: "Categoría eliminada exitosamente",
-        data: null,
-        errors: []
+        data: [],
+        errors: [],
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error al eliminar la categoría",
-        data: null,
-        errors: [error.message]
+        data: [],
+        errors: [error.message],
       });
     }
   }
